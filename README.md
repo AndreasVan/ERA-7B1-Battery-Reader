@@ -14,7 +14,7 @@ If you number the pins from the one nearest the edge is 1 and the on furthest as
 5= Reserve
 6= Minus (B-)
 
-Arduino conections (Nano V3.1):
+Arduino connections (Nano V3.1):
 
 Connect pin 2 (ERA-Battery) SMBus-Clock to analog pin 5 on the Arduino, and pin 3 (ERA-Battery) SMBus-Data to analog pin 4. 
 On both the SCL and SDA lines, add 4.7K ohm pull up resistors, connecting both lines to +3,3 V.
