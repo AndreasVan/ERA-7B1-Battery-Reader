@@ -1,7 +1,8 @@
 /*****************************************************************************
 
-  Prototype I2C interface to ERA-7B1 Battery 
-  Last update: AndreasVan 2017-10-15 Vers.1.5
+  Prototype I2C interface to Aibo Battery 
+  Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
+  Last update: AndreasVan 2017-10-16 Vers.2.1
 
   Micro controller Arduino Nano v3.1
 
