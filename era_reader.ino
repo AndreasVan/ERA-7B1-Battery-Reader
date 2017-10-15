@@ -1,12 +1,15 @@
 /*****************************************************************************
 
   Prototype I2C interface to ERA-7B1 Battery 
-  Last update: AndreasVan 2017-10-15 Vers.1.4
+  Last update: AndreasVan 2017-10-15 Vers.1.5
 
   Micro controller Arduino Nano v3.1
 
-  Arduino analog input 4 - I2C SCL
-  Arduino analog input 5 - I2C SDA
+  Arduino analog input 4 - I2C SDA
+  Arduino analog input 5 - I2C SCL
+ 
+  Arduino Nano Pinout 
+  http://www.pighixxx.com/test/pinouts/boards/nano.pdf 
    
   Read the information via 2-Wire SMBus 
   http://www.ti.com/lit/ds/symlink/bq2060a.pdf
@@ -19,11 +22,11 @@
 
 *****************************************************************************/
 
-//  Arduino Nano CLK = A4
+//  Arduino Nano Data = A4
 #define SDA_PORT PORTC
 #define SDA_PIN 4
 
-// Arduino Nano Data = A5
+// Arduino Nano CLK = A5
 #define SCL_PORT PORTC
 #define SCL_PIN 5
 
@@ -53,13 +56,12 @@ byte deviceAddress = 11;
 #define SPEC_INFO                0x1A
 #define MFG_DATE                 0x1B
 #define SERIAL_NUM               0x1C
-#define MFG_NAME                 0x20   // String
-#define DEV_NAME                 0x21   // String
-#define CELL_CHEM                0x22   // String
-#define MFG_DATA                 0x23   // String
-#define CELL3_VOLTAGE            0x3D
-#define CELL2_VOLTAGE            0x3E
+#define MFG_NAME                 0x20
+#define DEV_NAME                 0x21
+#define CELL_CHEM                0x22
+#define MFG_DATA                 0x23
 #define CELL1_VOLTAGE            0x3F
+#define CELL2_VOLTAGE            0x3E
 #define STATE_OF_HEALTH          0x4F
 
 #define bufferLen 32
@@ -201,8 +203,6 @@ void loop()
   Serial.println(fetchWord(CELL1_VOLTAGE));
   Serial.print("Cell 2 Voltage: ");
   Serial.println(fetchWord(CELL2_VOLTAGE));
-  Serial.print("Cell 3 Voltage: ");
-  Serial.println(fetchWord(CELL3_VOLTAGE));
   
   Serial.print("State of Health: ");
   Serial.println(fetchWord(STATE_OF_HEALTH));
