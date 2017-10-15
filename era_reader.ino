@@ -62,6 +62,8 @@ byte deviceAddress = 11;
 #define MFG_DATA                 0x23
 #define CELL1_VOLTAGE            0x3F
 #define CELL2_VOLTAGE            0x3E
+#define CELL3_VOLTAGE            0x3D
+#define CELL4_VOLTAGE            0x3C
 #define STATE_OF_HEALTH          0x4F
 
 #define bufferLen 32
@@ -203,6 +205,10 @@ void loop()
   Serial.println(fetchWord(CELL1_VOLTAGE));
   Serial.print("Cell 2 Voltage: ");
   Serial.println(fetchWord(CELL2_VOLTAGE));
+  Serial.print("Cell 3 Voltage: ");
+  Serial.println(fetchWord(CELL3_VOLTAGE));
+  Serial.print("Cell 4 Voltage: ");
+  Serial.println(fetchWord(CELL4_VOLTAGE));
   
   Serial.print("State of Health: ");
   Serial.println(fetchWord(STATE_OF_HEALTH));
