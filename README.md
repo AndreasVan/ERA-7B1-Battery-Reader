@@ -1,6 +1,7 @@
 AIBO Battery Refill Tool
 
-Prototype I2C interface to Aibo Battery 
+Prototype I2C interface to Aibo Battery.
+
 Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
 
 Sony stopped selling the batteries for their Aibo dogs. Sad to hear that this state of the art Aibo dog will be completely gone in the near future. The idea is refilling the old Aibo batteries. Here is step one to to keep Aibo alive. This tool will help to read the battery information. 
