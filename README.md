@@ -2,6 +2,8 @@ AIBO Battery Refill Tool
 
 Prototype I2C interface to Aibo Battery.
 
+And Prototype I2C interface to Aibo Battery standalone with LCD
+
 Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
 
 Sony stopped selling the batteries for their Aibo dogs. Sad to hear that this state of the art Aibo dog will be completely gone in the near future. The idea is refilling the old Aibo batteries. Here is step one to to keep Aibo alive. This tool will help to read the battery information. 
@@ -17,7 +19,7 @@ If you number the pins from the one nearest the edge is 1 and the on furthest as
 5= Reserve
 6= Minus (B-)
 
-Arduino connections (Nano V3.1):
+Arduino connections (Nano V3.1 / Uno R3):
 
 Connect pin 2 (ERA-Battery) SMBus-Clock to analog pin 5 on the Arduino, and pin 3 (ERA-Battery) SMBus-Data to analog pin 4. 
 On both the SCL and SDA lines, add 4.7K ohm pull up resistors, connecting both lines to +3,3 V.
