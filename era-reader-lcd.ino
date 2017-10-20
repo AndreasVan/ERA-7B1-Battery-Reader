@@ -2,14 +2,14 @@
 
   Prototype I2C interface to Aibo Battery LCD Version 
   Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
-  Last update: AndreasVan 2017-10-17 Vers.1.3
+  Last update: AndreasVan 2017-10-20 Vers.1.5
 
-  Micro controller Arduino Uno R3 + 1602 LCD Shield
+  Micro controller Arduino Uno R3
 
   Arduino analog input 4 - I2C SDA
   Arduino analog input 5 - I2C SCL
  
-  Arduino Uno Pinout 
+  Arduino Nano Pinout 
   https://forum.arduino.cc/index.php?topic=146315.0
   
   Arduino 1602 LCD Shield
@@ -43,12 +43,17 @@ byte deviceAddress = 11;
 
 #include <LiquidCrystal.h>
 
+// Status LED
+int LED1 = A2; //LED pin 1
+int LED2 = A3; //LED pin 2
+
 int x = 0;
 int currx = 1023;
 String btnStr = "None";
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield Andreas
+// LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD Andreas SD Card
 // LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Chris
 
 // Standard and common non-standard Smart Battery commands
@@ -85,6 +90,8 @@ uint8_t i2cBuffer[bufferLen];
 
 void setup()
 {
+  pinMode(LED1, OUTPUT); //set the LED pin as OUTPUT
+  pinMode(LED2, OUTPUT); //set the LED pin as OUTPUT
 //  Wire.begin();
   Serial.begin(115200);  // start serial for output
   Serial.println(i2c_init());
@@ -95,15 +102,17 @@ void setup()
 // Print a message to the LCD.
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("  Aibo Battery");
+  lcd.print("Aibo Batterytool");
   lcd.setCursor(0,1);
-  lcd.print("Tool Version 1.3");
+  lcd.print("  Version 1.5");
+  digitalWrite(LED1, HIGH);
   delay(3000);
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Get Started");
   lcd.setCursor(0,1);
   lcd.print("I2C Inialized");
+  digitalWrite(LED1, LOW);
   Serial.println("Get Started");
   
   i2c_init();
@@ -158,7 +167,7 @@ void scan()
       lcd.print("OK");
       lcd.setCursor(0,1);
       lcd.print(" Battery found!");
-      delay(3500);
+      delay(3000);
       Serial.flush();
     }
     else {
@@ -177,21 +186,28 @@ void loop()
 {
   uint8_t length_read = 0;
   currx = x;
+  
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Reading Battery");
   lcd.setCursor(0,1);
+  digitalWrite(LED2, HIGH);
   lcd.print("..");
-  delay(500);
+  delay(400);
+  digitalWrite(LED2, LOW);
   lcd.print("....");
-  delay(500);
+  delay(400);
+  digitalWrite(LED2, HIGH);
   lcd.print("......");
-  delay(500);
+  delay(400);
+  digitalWrite(LED2, LOW);
   lcd.print(".........");
-  delay(500);
+  delay(400);
+  digitalWrite(LED2, HIGH);
   lcd.print("...........");
-  delay(1000);
-  
+  delay(400);
+  digitalWrite(LED2, LOW);
+
   Serial.print("Manufacturer Name: ");
   length_read = i2c_smbus_read_block(MFG_NAME, i2cBuffer, bufferLen);
   Serial.write(i2cBuffer, length_read);
@@ -201,7 +217,7 @@ void loop()
   lcd.print("Manufacturer:");
   lcd.setCursor(0,1);
   lcd.write(i2cBuffer, length_read);
-  delay(3500);
+  delay(3000);
 
   Serial.print("Device Name: ");
   length_read = i2c_smbus_read_block(DEV_NAME, i2cBuffer, bufferLen);
@@ -212,7 +228,7 @@ void loop()
   lcd.print("Device Name:");
   lcd.setCursor(0,1);
   lcd.write(i2cBuffer, length_read);
-  delay(3500);
+  delay(3000);
 
   Serial.print("Chemistry ");
   length_read = i2c_smbus_read_block(CELL_CHEM, i2cBuffer, bufferLen);
@@ -223,13 +239,12 @@ void loop()
   lcd.print("Chemistry :");
   lcd.setCursor(0,1);
   lcd.write(i2cBuffer, length_read);
-  delay(3500);
+  delay(3000);
 
   Serial.print("Manufacturer Data ");
   length_read = i2c_smbus_read_block(MFG_DATA, i2cBuffer, bufferLen);
   Serial.write(i2cBuffer, length_read);
   Serial.println("");
-  
 
 //  String formatted_date = "Manufacture Date (Y-M-D): ";
   String formatted_date = "Date: ";
@@ -248,7 +263,7 @@ void loop()
   lcd.print("Manufacture");
   lcd.setCursor(0,1);
   lcd.print(formatted_date);
-  delay(3500);
+  delay(3000);
 
   Serial.print("Design Capacity: " );
   Serial.println(fetchWord(DESIGN_CAPACITY));
@@ -259,7 +274,7 @@ void loop()
   lcd.print(fetchWord(DESIGN_CAPACITY));
   lcd.setCursor(5,1);
   lcd.print("mAh");
-  delay(3500);
+  delay(3000);
   
   Serial.print("Design Voltage: " );
   Serial.println(fetchWord(DESIGN_VOLTAGE));
@@ -270,7 +285,7 @@ void loop()
   lcd.print((float)fetchWord(DESIGN_VOLTAGE)/1000);
   lcd.setCursor(5,1);
   lcd.print("Volt");
-  delay(3500);
+  delay(3000);
   
   Serial.print("Serial Number: ");
   Serial.println(fetchWord(SERIAL_NUM));
@@ -287,7 +302,7 @@ void loop()
   lcd.print("Count:");
   lcd.setCursor(7,1);
   lcd.print(fetchWord(CYCLE_COUNT));
-  delay(3500);
+  delay(3000);
       
   Serial.print("Voltage: ");
   Serial.println((float)fetchWord(VOLTAGE)/1000);
@@ -298,7 +313,7 @@ void loop()
   lcd.print((float)fetchWord(VOLTAGE)/1000);
   lcd.setCursor(5,1);
   lcd.print("Volt");
-  delay(3500);
+  delay(3000);
   
 
   Serial.print("Full Charge Capacity: " );
@@ -310,7 +325,7 @@ void loop()
   lcd.print(fetchWord(FULL_CHARGE_CAPACITY));
   lcd.setCursor(5,1);
   lcd.print("mAh");
-  delay(3500);
+  delay(3000);
   
   Serial.print("Remain Capacity: " );
   Serial.println(fetchWord(REMAINING_CAPACITY));
@@ -321,7 +336,7 @@ void loop()
   lcd.print(fetchWord(REMAINING_CAPACITY));
   lcd.setCursor(5,1);
   lcd.print("mAh");
-  delay(3500);
+  delay(3000);
 
   Serial.print("Relative Charge(%): ");
   Serial.println(fetchWord(RELATIVE_SOC));
@@ -332,7 +347,7 @@ void loop()
   lcd.print(fetchWord(RELATIVE_SOC));
   lcd.setCursor(3,1);
   lcd.print("%");
-  delay(3500);
+  delay(3000);
   
   Serial.print("Absolute Charge(%): ");
   Serial.println(fetchWord(ABSOLUTE_SOC));
@@ -343,7 +358,7 @@ void loop()
   lcd.print(fetchWord(ABSOLUTE_SOC));
   lcd.setCursor(3,1);
   lcd.print("%");
-  delay(3500);
+  delay(3000);
     
   Serial.print("Minutes remaining for full charge: ");
   Serial.println(fetchWord(TIME_TO_FULL));
@@ -369,6 +384,14 @@ void loop()
   Serial.print("Temp: ");
   unsigned int tempk = fetchWord(TEMPERATURE);
   Serial.println((float)tempk/10.0-273.15);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Temperature:");
+  lcd.setCursor(0,1);
+  lcd.print((float)tempk/10.0-273.15);
+  lcd.setCursor(6,1);
+  lcd.print("Celsius");
+  delay(3000);
 
   Serial.print("Current (mA): " );
   Serial.println(fetchWord(CURRENT));
