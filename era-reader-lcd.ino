@@ -9,7 +9,7 @@
   Arduino analog input 4 - I2C SDA
   Arduino analog input 5 - I2C SCL
  
-  Arduino Nano Pinout 
+  Arduino Uno Pinout 
   https://forum.arduino.cc/index.php?topic=146315.0
   
   Arduino 1602 LCD Shield
