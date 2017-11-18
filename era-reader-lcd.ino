@@ -2,14 +2,14 @@
 
   Prototype I2C interface to Aibo Battery LCD Version 
   Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
-  Last update: AndreasVan 2017-11-10 Vers.1.6
+  Last update: AndreasVan 2017-11-17 Vers.1.7
 
   Micro controller Arduino Uno R3
 
   Arduino analog input 4 - I2C SDA
   Arduino analog input 5 - I2C SCL
  
-  Arduino Nano Pinout 
+  Arduino Uno Pinout 
   https://forum.arduino.cc/index.php?topic=146315.0
   
   Arduino 1602 LCD Shield
@@ -52,8 +52,8 @@ int currx = 1023;
 String btnStr = "None";
 
 // initialize the library with the numbers of the interface pins
-//LiquidCrystal lcd(8,9, 4, 5, 6, 7); // LCD Shield Andreas
-LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD Andreas SD Card
+LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield Andreas
+// LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD Andreas SD Card
 // LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Chris
 
 // Standard and common non-standard Smart Battery commands
@@ -104,15 +104,13 @@ void setup()
   lcd.setCursor(0,0);
   lcd.print("Aibo Batterytool");
   lcd.setCursor(0,1);
-  lcd.print("by Yaba2017 V1.6");
+  lcd.print("by Yaba2017 V1.7");
   delay(3003);
   digitalWrite(LED1, HIGH);
-  delay(1000);
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Get Started");
   lcd.setCursor(0,1);
-  lcd.print("I2C Inialized");
+  lcd.print(" I2C Inialized ");
+  delay(2000                  );
   digitalWrite(LED1, LOW);
   Serial.println("Get Started");
   
@@ -170,13 +168,13 @@ void scan()
       lcd.print(" Battery found!");
       delay(2002);
       Serial.flush();
-    }
+    }  
     else {
       Serial.println(": -");
-//      lcd.clear();   
-//      lcd.setCursor(0,0);
-//      lcd.print("No Battery");   
-//      delay(50000);
+ //     lcd.clear();   
+ //     lcd.setCursor(0,0);
+ //     lcd.print("No Battery");   
+ //     delay(2002);
       Serial.flush();      
     }
     i2c_stop();
@@ -190,23 +188,23 @@ void loop()
   
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Reading Battery");
+  lcd.print("Reading Data");
   lcd.setCursor(0,1);
   digitalWrite(LED2, HIGH);
   lcd.print("..");
-  delay(400);
+  delay(150);
   digitalWrite(LED2, LOW);
   lcd.print("....");
-  delay(400);
+  delay(150);
   digitalWrite(LED2, HIGH);
   lcd.print("......");
-  delay(400);
+  delay(150);
   digitalWrite(LED2, LOW);
   lcd.print(".........");
-  delay(400);
+  delay(150);
   digitalWrite(LED2, HIGH);
   lcd.print("...........");
-  delay(400);
+  delay(200);
   digitalWrite(LED2, LOW);
 
   Serial.print("Manufacturer Name: ");
@@ -241,12 +239,7 @@ void loop()
   lcd.setCursor(0,1);
   lcd.write(i2cBuffer, length_read);
   delay(2002);
-
-  Serial.print("Manufacturer Data ");
-  length_read = i2c_smbus_read_block(MFG_DATA, i2cBuffer, bufferLen);
-  Serial.write(i2cBuffer, length_read);
-  Serial.println("");
-
+ 
 //  String formatted_date = "Manufacture Date (Y-M-D): ";
   String formatted_date = "Date: ";
   int mdate = fetchWord(MFG_DATE);
@@ -265,6 +258,11 @@ void loop()
   lcd.setCursor(0,1);
   lcd.print(formatted_date);
   delay(2002);
+  
+  Serial.print("Manufacturer Data ");
+  length_read = i2c_smbus_read_block(MFG_DATA, i2cBuffer, bufferLen);
+  Serial.write(i2cBuffer, length_read);
+  Serial.println("");
 
   Serial.print("Design Capacity: " );
   Serial.println(fetchWord(DESIGN_CAPACITY));
@@ -277,46 +275,6 @@ void loop()
   lcd.print("mAh");
   delay(2002);
   
-  Serial.print("Design Voltage: " );
-  Serial.println(fetchWord(DESIGN_VOLTAGE));
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Design Voltage:");
-  lcd.setCursor(0,1);
-  lcd.print((float)fetchWord(DESIGN_VOLTAGE)/1000);
-  lcd.setCursor(5,1);
-  lcd.print("Volt");
-  delay(2002);
-  
-  Serial.print("Serial Number: ");
-  Serial.println(fetchWord(SERIAL_NUM));
-
-  Serial.print("Specification Info: ");
-  Serial.println(fetchWord(SPEC_INFO));
- 
-  Serial.print("Cycle: " );
-  Serial.println(fetchWord(CYCLE_COUNT));
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Charge Cycle");
-  lcd.setCursor(0,1);
-  lcd.print("Count:");
-  lcd.setCursor(7,1);
-  lcd.print(fetchWord(CYCLE_COUNT));
-  delay(2002);
-      
-  Serial.print("Voltage: ");
-  Serial.println((float)fetchWord(VOLTAGE)/1000);
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("Voltage:");
-  lcd.setCursor(0,1);
-  lcd.print((float)fetchWord(VOLTAGE)/1000);
-  lcd.setCursor(5,1);
-  lcd.print("Volt");
-  delay(2002);
-  
-
   Serial.print("Full Charge Capacity: " );
   Serial.println(fetchWord(FULL_CHARGE_CAPACITY));
   lcd.clear();
@@ -339,6 +297,45 @@ void loop()
   lcd.print("mAh");
   delay(2002);
 
+  Serial.print("Cycle: " );
+  Serial.println(fetchWord(CYCLE_COUNT));
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Charge Cycle");
+  lcd.setCursor(0,1);
+  lcd.print("Count:");
+  lcd.setCursor(7,1);
+  lcd.print(fetchWord(CYCLE_COUNT));
+  delay(2002);
+      
+  Serial.print("Design Voltage: " );
+  Serial.println(fetchWord(DESIGN_VOLTAGE));
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Design Voltage:");
+  lcd.setCursor(0,1);
+  lcd.print((float)fetchWord(DESIGN_VOLTAGE)/1000);
+  lcd.setCursor(5,1);
+  lcd.print("Volt");
+  delay(2002);
+  
+  Serial.print("Serial Number: ");
+  Serial.println(fetchWord(SERIAL_NUM));
+
+  Serial.print("Specification Info: ");
+  Serial.println(fetchWord(SPEC_INFO));
+ 
+  Serial.print("Voltage: ");
+  Serial.println((float)fetchWord(VOLTAGE)/1000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Voltage:");
+  lcd.setCursor(0,1);
+  lcd.print((float)fetchWord(VOLTAGE)/1000);
+  lcd.setCursor(5,1);
+  lcd.print("Volt");
+  delay(2002);
+  
   Serial.print("Relative Charge(%): ");
   Serial.println(fetchWord(RELATIVE_SOC));
   lcd.clear();
