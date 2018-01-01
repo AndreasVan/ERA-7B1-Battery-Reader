@@ -2,7 +2,7 @@
 
   Prototype I2C interface to Aibo Battery LCD Version 
   Read Battery Data from Aibo ERS2xx, ERS3xx and ERS7 series.
-  Last update: AndreasVan 2017-11-17 Vers.1.7
+  Last update: AndreasVan 2018-01-01 Vers.1.8
 
   Micro controller Arduino Uno R3
 
@@ -52,9 +52,9 @@ int currx = 1023;
 String btnStr = "None";
 
 // initialize the library with the numbers of the interface pins
-// LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield Andreas
-// LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD Andreas SD Card
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Standart Chris
+// LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield (Andreas)
+// LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD SD Shield (Andreas)
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Standart (Chris)
 
 // Standard and common non-standard Smart Battery commands
 #define BATTERY_MODE             0x03
@@ -104,7 +104,7 @@ void setup()
   lcd.setCursor(0,0);
   lcd.print("Aibo Batterytool");
   lcd.setCursor(0,1);
-  lcd.print("by Yaba2017 V1.7");
+  lcd.print("by Yaba2018 V1.8");
   delay(3003);
   digitalWrite(LED1, HIGH);
   lcd.clear();
