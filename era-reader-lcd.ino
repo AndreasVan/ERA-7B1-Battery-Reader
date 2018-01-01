@@ -52,9 +52,9 @@ int currx = 1023;
 String btnStr = "None";
 
 // initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield Andreas
+// LiquidCrystal lcd(8, 9, 4, 5, 6, 7); // LCD Shield Andreas
 // LiquidCrystal lcd(8, 9, 5, 4, 3, 2); // 16x2 LCD Andreas SD Card
-// LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Chris
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2); // 16x2 LCD Standart Chris
 
 // Standard and common non-standard Smart Battery commands
 #define BATTERY_MODE             0x03
